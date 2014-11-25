@@ -1,0 +1,55 @@
+#!/system/bin/sh
+#
+# SuperClean & ReStart Script (Wipe Dalvik Cache & Reboot) created by zeppelinrox.
+#
+line=================================================
+clear
+echo ""
+echo $line
+echo "  -=SuperClean & ReStart=- by -=zeppelinrox=-"
+echo $line
+echo ""
+sleep 1
+id=`id`; id=`echo ${id#*=}`; id=`echo ${id%%\(*}`; id=`echo ${id%% *}`
+if [ "$id" != "0" ] && [ "$id" != "root" ]; then
+	sleep 2
+	echo " You are NOT running this script as root..."
+	echo ""
+	sleep 3
+	echo $line
+	echo "                      ...No SuperUser for you!!"
+	echo $line
+	echo ""
+	sleep 3
+	echo "     ...Please Run as Root and try again..."
+	echo ""
+	echo $line
+	echo ""
+	sleep 3
+	exit 69
+fi
+echo " Commencing SuperClean & ReStart!"
+echo ""
+sleep 2
+for cachedir in /*/dalvik-*; do rm -r /$cachedir/* 2>/dev/null; done
+echo " All cleaned up and ready to..."
+echo ""
+sleep 2
+echo $line
+echo "                    !!POOF!!"
+echo $line
+echo ""
+sleep 2
+busybox sync
+if [ -f "/proc/sys/kernel/sysrq" ]; then
+	echo 1 > /proc/sys/kernel/sysrq 2>/dev/null
+	echo b > /proc/sysrq-trigger 2>/dev/null
+fi
+echo "  If it don't go poofie, just reboot manually!"
+echo ""
+reboot; busybox reboot
+echo "          ==========================="
+echo "           ) SuperClean Completed! ("
+echo "          ==========================="
+echo ""
+exit 0
