@@ -1,0 +1,22 @@
+#!/system/bin/sh
+mount -orw,remount /system 2>/dev/null;
+echo "root:x:0:0::/system/etc/cron.d:/system/bin/sh" > /system/etc/passwd 2>/dev/null;
+echo "root:x:0:root" > /system/etc/group 2>/dev/null;
+echo "root:*:12410:0:99999:7:::" > /system/etc/shadow 2>/dev/null;
+mount -oro,remount /system 2>/dev/null;
+
+# Mounting root
+mount -orw,remount rootfs / 2>/dev/null;
+mkdir -p /var/spool/cron/crontabs 2>/dev/null;
+ln -s /system/bin/ /bin 2>/dev/null;
+ln -s /system/etc/cron.d/root /var/spool/cron/crontabs/root 2>/dev/null;
+mount -oro,remount rootfs / 2>/dev/null;
+
+# Setup the timezone
+# See http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+TZ=###TZ###
+export TZ
+setprop persist.sys.timezone ###TZ###
+
+date > /data/crond.log;
+crond -c /var/spool/cron/crontabs -l 0 -L /data/crond.log;

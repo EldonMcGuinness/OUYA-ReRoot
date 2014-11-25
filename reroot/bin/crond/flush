@@ -1,0 +1,105 @@
+#!/system/bin/sh
+#
+# Fast Engine Flush Script created by zeppelinrox.
+#
+# See http://goo.gl/krtf9 - Linux Memory Consumption - Nice article which also discusses the "drop system cache" function!
+# See http://goo.gl/hFdNO - Memory and SuperCharging Overview ...or... "Why 'Free RAM' Is NOT Wasted RAM!"
+#
+# Credit imoseyon for making the drop caches command more well known :)
+# See http://www.droidforums.net/forum/liberty-rom-d2/122733-tutorial-sysctl-you-guide-better-preformance-battery-life.html
+# Credit dorimanx (Cool XDA dev!) for the neat idea to show before and after stats :D
+#
+clear
+#
+# For debugging, delete the # at the beginning of the following 2 lines, and check /data/Log_FastEngineFlush.log file to see what may have fubarred.
+# set -x
+# exec > /data/Log_FastEngineFlush.log 2>&1
+#
+line=================================================
+echo ""
+echo $line
+echo " -=Fast Engine Flush=- script by -=zeppelinrox=-"
+echo $line
+echo ""
+sleep 1
+id=`id`; id=`echo ${id#*=}`; id=`echo ${id%%\(*}`; id=`echo ${id%% *}`
+if [ "$id" != "0" ] && [ "$id" != "root" ]; then
+	sleep 2
+	echo " You are NOT running this script as root..."
+	echo ""
+	sleep 3
+	echo $line
+	echo "                      ...No SuperUser for you!!"
+	echo $line
+	echo ""
+	sleep 3
+	echo "     ...Please Run as Root and try again..."
+	echo ""
+	echo $line
+	echo ""
+	sleep 3
+	exit 69
+fi
+busybox mount -o remount,rw /data 2>/dev/null
+ram=$((`free | awk '{ print $2 }' | sed -n 2p`/1024))
+ramused=$((`free | awk '{ print $3 }' | sed -n 2p`/1024))
+ramkbytesfree=`free | awk '{ print $4 }' | sed -n 2p`
+ramkbytescached=`cat /proc/meminfo | grep Cached | awk '{print $2}' | sed -n 1p`
+ramfree=$(($ramkbytesfree/1024));ramcached=$(($ramkbytescached/1024));ramreportedfree=$(($ramfree + $ramcached))
+echo "  Note that \"Used RAM\" INCLUDES Cached Apps!!"
+echo ""
+sleep 1
+echo $line
+echo " RAM Stats BEFORE Engine Flush..."
+echo $line
+echo ""
+sleep 1
+echo " Total: $ram MB  Used: $ramused MB  True Free: $ramfree MB"
+echo ""
+sleep 1
+echo " Most tools will report $ramreportedfree MB Free RAM!"
+echo ""
+sleep 1
+echo $line
+echo " True Free $ramfree MB = \"Free\" $ramreportedfree - Cached Apps $ramcached"
+echo $line
+echo ""
+sleep 1
+echo " ...OR...    True Free RAM   $ramfree"
+echo "               Cached Apps + $ramcached"
+echo "                           ========"
+echo "       Reported \"Free\" RAM = $ramreportedfree MB"
+echo ""
+busybox sync; echo 3 > /proc/sys/vm/drop_caches
+sleep 3
+echo 1 > /proc/sys/vm/drop_caches
+ramused=$((`free | awk '{ print $3 }' | sed -n 2p`/1024))
+ramkbytesfree=`free | awk '{ print $4 }' | sed -n 2p`
+ramkbytescached=`cat /proc/meminfo | grep Cached | awk '{print $2}' | sed -n 1p`
+ramfree=$(($ramkbytesfree/1024));ramcached=$(($ramkbytescached/1024));ramreportedfree=$(($ramfree + $ramcached))
+echo $line
+echo "                ...RAM Stats AFTER Engine Flush"
+echo $line
+echo ""
+sleep 1
+echo " Total: $ram MB  Used: $ramused MB  True Free: $ramfree MB"
+echo ""
+sleep 1
+echo " Most tools will report $ramreportedfree MB Free RAM!"
+echo ""
+sleep 1
+echo $line
+echo " True Free $ramfree MB = \"Free\" $ramreportedfree - Cached Apps $ramcached"
+echo $line
+echo ""
+sleep 1
+echo " ...OR...    True Free RAM   $ramfree"
+echo "               Cached Apps + $ramcached"
+echo "                           ========"
+echo "       Reported \"Free\" RAM = $ramreportedfree MB"
+echo ""
+sleep 1
+echo "       =================================="
+echo "        ) Fast Engine Flush Completed! ("
+echo "       =================================="
+exit 0
