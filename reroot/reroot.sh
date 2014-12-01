@@ -2,7 +2,7 @@
 # OUYA-0 Reroot script
 
 SYSTEMID="ouya-0"
-RRVER="1.2"
+RRVER="1.2.1"
 
 function show_notice {
 	while true;
@@ -174,6 +174,7 @@ function do_install_crond {
 	export TZ
 	setprop persist.sys.timezone $inputtz
 	
+	rm /etc/init.d/S99crond 2> /dev/null
 	ln -s /system/xbin/S99crond /etc/init.d/S99crond
 	
 	do_system_ro
