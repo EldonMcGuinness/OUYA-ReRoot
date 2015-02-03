@@ -1,22 +1,28 @@
-ReRoot Script
+OUYA-ReRoot
+===========
+
+ReRoot Script: Used to unlock your OUYA's inner awesomeness
 
 **Inroduction**
+
 This little bit of script-fu allows you to enable an number of 'hacks', including
 superuser access. This script is provided as is and comes with absolutely no warranty
 or guarantee.
 
 **What the script can do**
-Install Root
-Install Init.d (Requires Root)
-Install Cron.d (Requires Root & Init.d)
-Install Google Play Store (Requires Root)
-Permanently Enable Network ADB
-Download the latest OTA to /sdcard (Requires Root)
-Setup cleanup script to run every hour (Crond)
-Setup cache cleaner and reboot to run every week (Crond)
-Setup swap on USB (Requires Init.d)
+
+- Install Root
+- Install Init.d (Requires Root)
+- Install Cron.d (Requires Root & Init.d)
+- Install Google Play Store (Requires Root)
+- Permanently Enable Network ADB
+- Download the latest OTA to /sdcard (Requires Root)
+- Setup cleanup script to run every hour (Crond)
+- Setup cache cleaner and reboot to run every week (Crond)
+- Setup swap on USB (Requires Init.d)
 	
 **What is inlcuded in this package**
+
 Aside from the reroot script this archive also includes the drivers and sofware to make
 an ADB connection to your ouya via usb or network. If you need help setting up the USB
 ADB connection then please check:
@@ -31,20 +37,28 @@ This pakcage also includes the files needed to run and install the CWM Recovery 
 if you need it. This should not be needed unless there is an issue with the OUYA
 application.
 
+**How do I use this**
+
+1. Send the reroot folder over to your OUYA via adb or with a usbdrive
+
+2. Start the installation:
+  ```bash
+  su
+  sh reroot.sh
+  ```
+3. Make sure you *READ THE PROMPTS*, some things have requirements that you will need to ensure are already installed.
+
 **HELP**
 
 - I need to get into recovery mode how can I do this?
   The easiest way to get into this mode requires a USB keyboard (not bluetooth).
-  1)  Plug the keyboard in to the OUYA
-
-  2)  Turn on the OUYA and press and hold the (Alt. + PrtScn + i) keys, in that order.
+  1.  Plug the keyboard in to the OUYA
+  2.  Turn on the OUYA and press and hold the (Alt. + PrtScn + i) keys, in that order.
       On each press hold all three for 5 seconds then release, do this over and over 
       for 30 seconds or until the device restarts.
-
-  3)  Once the device restarts you should see the OUYA name with a red exclamation mark.
+  3.  Once the device restarts you should see the OUYA name with a red exclamation mark.
       Press the home button to show the recovery options.
-	
-  4)  You can then 'sideload' the latest OTA from your computer to the ouya using the ADB	
+  4.  You can then 'sideload' the latest OTA from your computer to the ouya using the ADB	
       option. You can get the latest OTA url from the link below, just look for the url
       that has the RC-OUYA-X.X.XXXX-r1_ota.zip naming scheme.
       https://devs.ouya.tv/api/firmware_builds 
@@ -57,4 +71,3 @@ application.
 	
 - The Moga controller is not working
   Make sure you enabled it in the Mod Collection 4 OUYA for the game in question "App list"
-	
