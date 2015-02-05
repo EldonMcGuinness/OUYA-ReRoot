@@ -2,7 +2,7 @@
 # OUYA-0 Reroot script
 
 SYSTEMID="ouya-0"
-RRVER="1.2.1"
+RRVER="1.2.3"
 
 function show_notice {
 	while true;
@@ -14,7 +14,7 @@ function show_notice {
 		echo "###                                                                         ###"
 		echo "###  Notice: This little bit of script-fu allows you to enable an number of ###"
 		echo "###  'hacks', including superuser access. This script is provided as is and ###"
-		echo "###  comes with absoluteyly no warranty or guantee.                         ###"
+		echo "###  comes with absoluteyly no warranty or guarantee.                       ###"
 		echo "###############################################################################"
 		echo ""
 		read "inputagree?Do you wish to release your OUYA's inner awesomeness? (y/n): "

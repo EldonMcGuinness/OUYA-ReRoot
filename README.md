@@ -40,13 +40,15 @@ application.
 **How do I use this**
 
 1. Send the reroot folder over to your OUYA via adb or with a usbdrive
-
-2. Start the installation:
+2. Connect to your OUYA
+  via USB: adb shell
+  via Network: adb connect OUYAIP
+3. Start the installation:
   ```bash
   su
-  sh reroot.sh
+  sh reroot.sh install
   ```
-3. Make sure you *READ THE PROMPTS*, some things have requirements that you will need to ensure are already installed.
+4. Make sure you *READ THE PROMPTS*, some things have requirements that you will need to ensure are already installed.
 
 **HELP**
 
