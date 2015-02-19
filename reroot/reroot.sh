@@ -313,7 +313,7 @@ function do_backup {
 	echo "###############################################################################"
 	echo ""
 
-	tar -cf "/sdcard/${SYSTEMID}.tar"  /etc/init.d /system/xbin /etc/cron.d  
+	tar -cf "/sdcard/${SYSTEMID}.tar"  /etc/init.d /system/xbin /etc/cron.d  /system/usr/keylayout
 	
 	echo Done, settings saved to /sdcard/${SYSTEMID}.tar
 	read "cont?Press the [Enter] key to continue..."
