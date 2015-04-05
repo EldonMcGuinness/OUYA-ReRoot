@@ -319,6 +319,66 @@ function do_backup {
 	read "cont?Press the [Enter] key to continue..."
 }
 
+function do_clone {
+	while true; do
+		
+		echo "###############################################################################"
+		echo "###                          What do you want to do?                        ###"
+		echo "###############################################################################"
+		echo "###  1) Create Image                                                        ###"
+		echo "###  2) Restore Image                                                       ###"
+		echo "###  x) Return to main menu                                                 ###"
+		echo "###                                                                         ###"
+		echo "###  NOTE: Pleast make sure you do not have any mountpoint from a USB drive ###"
+		echo "###        or network location active as it make become part of the backup! ###"
+		echo "###############################################################################"
+		echo ""
+		read "inputinstallchoice?What do you want to do (1,2,x): "
+		case $inputinstallchoice in
+			[1] )
+				do_createimage
+				;;
+			[2] )
+				do_restoreimage
+				;;
+			[Xx] )
+				break
+				;;
+		esac
+	done
+}
+
+function do_createimage {
+	
+	echo "###############################################################################"
+	echo "###                             Cloning Device                              ###"
+	echo "###############################################################################"
+	echo ""
+
+	tar -cf "/sdcard/${SYSTEMID}.tar"  /etc/init.d /system/xbin /etc/cron.d  /system/usr/keylayout /mnt/sdcard /data/data
+	
+	echo Done, image saved to /mnt/usbdrive/${SYSTEMID}.tar
+	read "cont?Press the [Enter] key to continue..."
+}
+
+function do_restoreimage {
+	
+	echo "###############################################################################"
+	echo "###                         Restoring Device Image                          ###"
+	echo "###############################################################################"
+	echo ""
+	
+	do_system_rw
+	
+	echo "Extracting Backup from /mnt/usbdrive/${SYSTEMID}.tar"
+	tar -xf "/mnt/usbdrive/${SYSTEMID}.tar" -C / 
+	
+	do_system_ro
+	
+	echo Done, please reboot your OUYA now.
+	read "Press the [Enter] key to continue..."
+}
+
 function do_setup_swap {
 	
 	echo "###############################################################################"
@@ -396,8 +456,11 @@ case "$1" in
 	backup)
 		do_backup
 		;;
+	clone)
+		do_clone
+		;;
 	*)
-		echo "Usage: $0 {install|restore|backup}";
+		echo "Usage: $0 {install|restore|backup|clone}";
 		exit 1
 esac
 
